@@ -4,7 +4,7 @@ Summary(pl.UTF-8):	Biblioteka o otwartych źródłach do kart we/wy AJA Video Sy
 Name:		libajantv2
 Version:	17.0.0
 %define	gitref	ntv2_%(echo %{version} | tr . _)
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/aja-video/libajantv2/releases
@@ -59,6 +59,31 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_includedir}
 %{__mv} $RPM_BUILD_ROOT%{_prefix}/libajantv2 $RPM_BUILD_ROOT%{_includedir}
+%{__rm} $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/includes/ntv2version.h.in
+%{__mv} $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/src/lin/*.h $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/includes
+%{__rm} -r $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/src/{mac,win}
+rmdir $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/src/lin
+# adjust for single -I%{_includedir}/libajantv2 flag
+%{__sed} -e 's,"ajatypes.h","ajantv2/includes/ajatypes.h",' \
+	-e 's,"ntv2version.h","ajantv2/includes/ntv2version.h",' \
+	-e 's,"ntv2publicinterface.h","ajantv2/includes/ntv2publicinterface.h",' \
+	-i $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajaanc/includes/ancillarydata.h
+%{__sed} -e 's,"ntv2formatdescriptor.h","ajantv2/includes/ntv2formatdescriptor.h",' \
+	-i $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajaanc/includes/ancillarylist.h
+
+install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
+cat >$RPM_BUILD_ROOT%{_pkgconfigdir}/libajantv2.pc <<'EOF'
+prefix=%{_prefix}
+exec_prefix=%{_exec_prefix}
+libdir=%{_libdir}
+includedir=%{_includedir}
+
+Name: libajantv2
+Description: AJA NTV2 library
+Version: %{version}
+Libs: -L${libdir} -lajantv2
+Cflags: -I${includedir}/libajantv2
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,3 +105,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libajantv2.so
 %{_includedir}/libajantv2
+%{_pkgconfigdir}/libajantv2.pc
