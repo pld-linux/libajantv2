@@ -2,14 +2,14 @@
 Summary:	Open-source library for AJA Video Systems desktop I/O cards
 Summary(pl.UTF-8):	Biblioteka o otwartych źródłach do kart we/wy AJA Video Systems
 Name:		libajantv2
-Version:	17.0.0
+Version:	17.0.1
 %define	gitref	ntv2_%(echo %{version} | tr . _)
-Release:	2
+Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/aja-video/libajantv2/releases
 Source0:	https://github.com/aja-video/libajantv2/archive/%{gitref}/%{name}-%{version}.tar.gz
-# Source0-md5:	57f7074c8a0653d5df267f55a37d748c
+# Source0-md5:	562606360d6de2487d9e7916156da8a8
 URL:		https://github.com/aja-video/libajantv2
 BuildRequires:	Qt5Core-devel >= 5
 BuildRequires:	cmake >= 3.15
@@ -57,9 +57,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_includedir}
-%{__mv} $RPM_BUILD_ROOT%{_prefix}/libajantv2 $RPM_BUILD_ROOT%{_includedir}
-%{__rm} $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/includes/ntv2version.h.in
 %{__mv} $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/src/lin/*.h $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/includes
 %{__rm} -r $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/src/{mac,win}
 rmdir $RPM_BUILD_ROOT%{_includedir}/libajantv2/ajantv2/src/lin
@@ -99,7 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pciwhacker
 %attr(755,root,root) %{_bindir}/regio
 %attr(755,root,root) %{_bindir}/supportlog
-%attr(755,root,root) %{_libdir}/libajantv2.so.17.0.0.0
+%attr(755,root,root) %{_libdir}/libajantv2.so.17.0.1.0
 
 %files devel
 %defattr(644,root,root,755)
