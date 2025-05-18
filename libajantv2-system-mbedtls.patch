@@ -1,7 +1,7 @@
---- libajantv2-ntv2_17_1_3/ajantv2/CMakeLists.txt.orig	2024-11-26 23:20:59.000000000 +0100
-+++ libajantv2-ntv2_17_1_3/ajantv2/CMakeLists.txt	2025-03-21 21:06:15.799265763 +0100
-@@ -52,49 +52,7 @@ if (AJANTV2_DISABLE_PLUGIN_LOAD)
- else()
+--- libajantv2-ntv2_17_5_0/ajantv2/CMakeLists.txt.orig	2025-03-12 19:33:19.000000000 +0100
++++ libajantv2-ntv2_17_5_0/ajantv2/CMakeLists.txt	2025-05-18 17:38:13.032874448 +0200
+@@ -55,49 +55,7 @@ else()
+     endif()
      message(STATUS "NTV2 SDK will load signed 3rd-party plugins")
  
 -    set(MBEDTLS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/mbedtls-install)
@@ -14,7 +14,6 @@
 -        set(MBEDCRYPTO_LIBRARY ${MBEDTLS_LIBRARY_DIR}/mbedcrypto.lib)
 -        set(MBEDTLS_EXTRA_CONFIG_FLAGS
 -                "-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON"
--                "-DMSVC_STATIC_RUNTIME=ON"
 -                "-DCMAKE_MSVC_RUNTIME_LIBRARY=${CMAKE_MSVC_RUNTIME_LIBRARY}")
 -    elseif (CMAKE_SYSTEM_NAME MATCHES "^(Linux|Darwin)$")
 -        set(MBEDTLS_LIBRARY ${MBEDTLS_LIBRARY_DIR}/libmbedtls.a)
@@ -26,7 +25,7 @@
 -    # BUILD_BYPRODUCTS informing CMake where the .a files are located is required to make Ninja build work
 -    ExternalProject_Add(
 -        mbedtls
--        GIT_REPOSITORY https://github.com/aja-video/mbedtls.git
+-        GIT_REPOSITORY ${AJANTV2_MBEDTLS_URL}
 -        GIT_TAG fix-win-dll-cmake
 -        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${MBEDTLS_INSTALL_DIR}
 -                    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -37,6 +36,7 @@
 -                    -DUSE_STATIC_MBEDTLS_LIBRARY=ON
 -                    -DUSE_SHARED_MBEDTLS_LIBRARY=OFF
 -                    ${MBEDTLS_EXTRA_CONFIG_FLAGS}
+-		CMAKE_CACHE_ARGS "-DCMAKE_OSX_ARCHITECTURES:STRING=${CMAKE_OSX_ARCHITECTURES}"
 -        BUILD_ALWAYS TRUE
 -        BUILD_BYPRODUCTS ${MBEDTLS_LIBRARY} ${MBEDX509_LIBRARY} ${MBEDCRYPTO_LIBRARY}
 -    )
@@ -51,7 +51,7 @@
  endif()
  
  
-@@ -627,10 +627,6 @@ if (NOT TARGET ${PROJECT_NAME})
+@@ -672,10 +630,6 @@ if (NOT TARGET ${PROJECT_NAME})
  
          add_library(${PROJECT_NAME} SHARED ${TARGET_SOURCES})
          
@@ -62,7 +62,7 @@
          target_compile_definitions(${PROJECT_NAME} PUBLIC
              ${TARGET_COMPILE_DEFS_DYNAMIC}
              ${AJANTV2_TARGET_COMPILE_DEFS})
-@@ -645,10 +641,6 @@ if (NOT TARGET ${PROJECT_NAME})
+@@ -690,10 +644,6 @@ if (NOT TARGET ${PROJECT_NAME})
  
          add_library(${PROJECT_NAME} STATIC ${TARGET_SOURCES})
  

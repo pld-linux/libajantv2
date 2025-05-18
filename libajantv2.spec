@@ -2,14 +2,14 @@
 Summary:	Open-source library for AJA Video Systems desktop I/O cards
 Summary(pl.UTF-8):	Biblioteka o otwartych źródłach do kart we/wy AJA Video Systems
 Name:		libajantv2
-Version:	17.1.3
+Version:	17.5.0
 %define	gitref	ntv2_%(echo %{version} | tr . _)
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/aja-video/libajantv2/releases
 Source0:	https://github.com/aja-video/libajantv2/archive/%{gitref}/%{name}-%{version}.tar.gz
-# Source0-md5:	255d6ce495baf576fbbb4cae31e6bd25
+# Source0-md5:	4c9b24e6e76dba76c8e49097b1c872cb
 Patch0:		%{name}-system-mbedtls.patch
 URL:		https://github.com/aja-video/libajantv2
 BuildRequires:	Qt5Core-devel >= 5
@@ -100,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pciwhacker
 %attr(755,root,root) %{_bindir}/regio
 %attr(755,root,root) %{_bindir}/supportlog
-%attr(755,root,root) %{_libdir}/libajantv2.so.17.1.3.0
+%attr(755,root,root) %{_libdir}/libajantv2.so.17.5.0.0
 
 %files devel
 %defattr(644,root,root,755)
